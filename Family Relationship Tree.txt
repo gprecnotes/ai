@@ -1,0 +1,35 @@
+from collections import defaultdict
+
+class Solution:
+    def __init__(self, head_name):
+        self.family = defaultdict(list)
+        self.head = head_name
+        self.dead = set()
+
+    def birth(self, p_name, c_name):
+        self.family[p_name].append(c_name)
+
+    def death(self, name):
+        self.dead.add(name)
+
+    def inheritance(self):
+        ans = []
+        def depth_search(current):
+            if current not in self.dead:
+                ans.append(current)
+                for child in self.family[current]:
+                    depth_search(child)
+        depth_search(self.head)
+        return ans
+ob = Solution('Paul')
+ob.birth('Paul', 'Zach')
+ob.birth('Zach', 'Emma')
+ob.birth('Paul', 'David')
+ob.birth('David', 'Sophia')
+ob.death('David')
+result = ob.inheritance()
+print(result)
+
+
+output:
+['Paul', 'Zach', 'Emma']

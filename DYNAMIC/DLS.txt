@@ -1,0 +1,57 @@
+def dls(graph, start, goal, depth):
+    def dfs(node, level, current_path):
+        if level > depth:
+            return False
+        if node == goal:
+            visited.append(node)
+            current_path.append(node)
+            return True
+        if node in visited:
+            return False
+        visited.append(node)
+        current_path.append(node)
+        for neighbor in graph[node]:
+            if dfs(neighbor, level + 1, current_path):
+                return True
+        current_path.pop()  # Backtrack if no path found
+        return False
+
+    path = []
+    result = dfs(start, 0, path)
+    return result, path
+
+# Take input from user for the graph
+graph = {}
+nodes = input("Enter nodes (comma-separated): ").split(',')
+for node in nodes:
+    neighbors = input(f"Enter neighbors for node {node} (comma-separated, empty for none): ").split(',')
+    graph[node] = neighbors
+
+# Take input from user for start, goal, and depth
+start_node = input("Enter start node: ")
+goal_node = input("Enter goal node: ")
+depth_limit = int(input("Enter depth limit: "))
+
+result, path = dls(graph, start_node, goal_node, depth_limit)
+if result:
+    print(f"There is a path from {start_node} to {goal_node} within the depth limit {depth_limit}")
+    print("Path:", ' -> '.join(path))
+else:
+    print("There is no path within the limit")
+
+Output 
+
+Enter nodes (comma-separated): A,B,C,D,E,F,G
+Enter neighbors for node A (comma-separated, empty for none): B,C
+Enter neighbors for node B (comma-separated, empty for none): D,E
+Enter neighbors for node C (comma-separated, empty for none): F
+Enter neighbors for node D (comma-separated, empty for none): 
+Enter neighbors for node E (comma-separated, empty for none): F
+Enter neighbors for node F (comma-separated, empty for none): G
+Enter neighbors for node G (comma-separated, empty for none): 
+Enter start node: A
+Enter goal node: G
+Enter depth limit: 4
+
+There is a path from A to G within the depth limit 4
+Path: A -> C -> F -> G

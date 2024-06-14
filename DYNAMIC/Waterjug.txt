@@ -1,0 +1,32 @@
+from collections import defaultdict
+visited=defaultdict(lambda : False)
+j1=int(input("Enter jug1 capacity : "))
+j2=int(input("Enter jug2 capacity : "))
+a=int(input("Enter the capacity needed : "))
+def waterjug(a1,a2):
+    if (a1==0 and a2==a) or (a1==a and a2==0):
+        print(a1,a2)
+        return True
+    if visited[a1,a2]==False:
+        print(a1,a2)
+        visited[a1,a2]=True
+        return waterjug(0,a2) or waterjug(a1,0) or waterjug(j1,a2) or waterjug(a1,j2) or waterjug(a1+min(a2,j1-a1),a2-min(a2,j1-a1)) or waterjug(a1-min(a1,j2-a2),a2+min(a1,j2-a2))
+    else:
+        return False
+print("Steps")
+waterjug(0,0)
+
+Output
+Enter jug1 capacity: 4
+Enter jug2 capacity: 3
+Enter the capacity needed: 2
+Steps:
+0 0
+4 0
+4 3
+1 3
+1 0
+0 1
+4 1
+4 2
+2 2

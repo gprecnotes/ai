@@ -1,0 +1,48 @@
+class DFS:
+    def main(self):
+        nv = int(input("Enter the number of vertices: "))
+        ne = int(input("Enter the number of edges: "))
+        cost = [[0] * nv for _ in range(nv)]
+
+        print("Enter the edges (format: vertex1 vertex2):")
+        for _ in range(ne):
+            v1, v2 = map(int, input().split())
+            cost[v1][v2] = 1
+
+        s = int(input("Enter the source vertex: "))
+        depth_limit = int(input("Enter the depth limit: "))  # Set the depth limit
+        visit = [False] * nv
+        self.DLSTraversal(cost, s, visit, depth_limit)  # Call DLS function
+
+    def DLSTraversal(self, cost, s, visit, depth_limit):
+        self.DLSRecursive(cost, s, visit, depth_limit, 0)
+
+    def DLSRecursive(self, cost, s, visit, depth_limit, depth):
+        if depth == depth_limit:
+            return
+        visit[s] = True
+        print(s, end=" ")
+
+        for i in range(len(cost)):
+            if cost[s][i] != 0 and not visit[i]:
+                self.DLSRecursive(cost, i, visit, depth_limit, depth + 1)
+
+if __name__ == "__main__":
+    dfs_instance = DFS()
+    dfs_instance.main()
+
+
+output:
+
+Enter the number of vertices: 4
+Enter the number of edges: 5
+Enter the edges (format: vertex1 vertex2):
+0 1
+0 2
+1 2
+2 3
+3 1
+Enter the source vertex: 0
+Enter the depth limit: 4
+0 1 2 3 
+

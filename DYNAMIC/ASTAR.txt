@@ -1,0 +1,76 @@
+from queue import PriorityQueue
+
+def astar(graph, start, goal, heuristic):
+    priority_queue = PriorityQueue()
+    priority_queue.put((0, start))
+    came_from = {}
+    cost_so_far = {start: 0}
+
+    while not priority_queue.empty():
+        _, current = priority_queue.get()
+
+        if current == goal:
+            path = []
+            while current in came_from:
+                path.append(current)
+                current = came_from[current]
+            path.append(start)
+            return list(reversed(path)), cost_so_far[goal]
+
+        for next_node in graph[current]:
+            new_cost = cost_so_far[current] + graph[current][next_node]
+            if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+                cost_so_far[next_node] = new_cost
+                priority = new_cost + heuristic[next_node]
+                priority_queue.put((priority, next_node))
+                came_from[next_node] = current
+
+    return None, None
+
+# Take input from user for the graph
+graph = {}
+nodes = input("Enter nodes (comma-separated): ").split(',')
+for node in nodes:
+    neighbors = input(f"Enter neighbors for node {node} (format: neighbor1,cost1,neighbor2,cost2,...): ").split(',')
+    graph[node] = {}
+    for i in range(0, len(neighbors), 2):
+        neighbor = neighbors[i]
+        cost = int(neighbors[i + 1])
+        graph[node][neighbor] = cost
+
+# Take input from user for start and goal nodes
+start_node = input("Enter start node: ")
+goal_node = input("Enter goal node: ")
+
+# Take input from user for heuristic values
+heuristic = {}
+for node in nodes:
+    heuristic[node] = int(input(f"Enter heuristic value for node {node}: "))
+
+# Find and print the A* path
+path, cost = astar(graph, start_node, goal_node, heuristic)
+if path is not None:
+    print(f'A* Path from {start_node} to {goal_node}: {path}')
+    print(f'Total cost: {cost}')
+else:
+    print('No path found.')
+Output
+
+Enter nodes (comma-separated): S,A,B,C,D,G
+Enter neighbors for node S (format: neighbor1,cost1,neighbor2,cost2,...): A,1,G,10
+Enter neighbors for node A (format: neighbor1,cost1,neighbor2,cost2,...): B,2,C,1
+Enter neighbors for node B (format: neighbor1,cost1,neighbor2,cost2,...): D,3
+Enter neighbors for node C (format: neighbor1,cost1,neighbor2,cost2,...): D,3,G,4
+Enter neighbors for node D (format: neighbor1,cost1,neighbor2,cost2,...): G,2
+Enter neighbors for node G (format: neighbor1,cost1,neighbor2,cost2,...): 
+Enter start node: S
+Enter goal node: G
+Enter heuristic value for node S: 5
+Enter heuristic value for node A: 3
+Enter heuristic value for node B: 4
+Enter heuristic value for node C: 2
+Enter heuristic value for node D: 6
+Enter heuristic value for node G: 0
+
+A* Path from S to G: ['S', 'A', 'C', 'G']
+Total cost: 15

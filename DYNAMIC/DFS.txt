@@ -1,0 +1,41 @@
+visited = set()
+
+def dfs(graph, node):
+    if node not in visited:
+        print(node)
+        visited.add(node)
+        for neighbor in graph[node]:
+            dfs(graph, neighbor)
+
+# Take input from user for the graph
+graph = {}
+nodes = input("Enter nodes (comma-separated): ").split(',')
+
+for node in nodes:
+    neighbors = input(f"Enter neighbors for node {node} (comma-separated, empty for none): ").split(',')
+    graph[node] = neighbors
+
+# Take input from user for the start node
+start_node = input("Enter start node: ")
+
+print("DFS Traverse graph:")
+dfs(graph, start_node)
+
+Output
+
+Enter nodes (comma-separated): 5,3,7,2,4,8
+Enter neighbors for node 5 (comma-separated, empty for none): 3,7
+Enter neighbors for node 3 (comma-separated, empty for none): 2,4
+Enter neighbors for node 7 (comma-separated, empty for none): 8
+Enter neighbors for node 2 (comma-separated, empty for none): 
+Enter neighbors for node 4 (comma-separated, empty for none): 8
+Enter neighbors for node 8 (comma-separated, empty for none): 
+Enter start node: 5
+
+DFS Traverse graph:
+5
+3
+2
+4
+8
+7

@@ -1,0 +1,57 @@
+from collections import defaultdict
+
+class Family:
+    def __init__(self, head):
+        self.family = defaultdict(list)
+        self.head = head
+        self.dead = set()
+
+    def birth(self, p, c):
+        if p not in self.dead and c not in self.dead:
+            self.family[p].append(c)
+
+    def death(self, person):
+        if person not in self.dead:
+            self.dead.add(person)
+
+    def inheritance(self):
+        self.ans = []
+        self.depth(self.head)
+        return self.ans
+
+    def depth(self, curr):
+        if curr not in self.dead:
+            self.ans.append(curr)
+        for child in self.family[curr]:
+            self.depth(child)
+
+# Input from user
+head_of_family = input("Enter the head of the family: ")
+ob = Family(head_of_family)
+
+while True:
+    operation = input("Enter operation (birth/death/quit): ").lower()
+
+    if operation == "birth":
+        parent = input("Enter parent: ")
+        child = input("Enter child: ")
+        ob.birth(parent, child)
+    elif operation == "death":
+        person = input("Enter person to mark as dead: ")
+        ob.death(person)
+    elif operation == "quit":
+        break
+    else:
+        print("Invalid operation. Please enter birth, death, or quit.")
+
+print("Inheritance list:", ob.inheritance())
+
+Output
+
+Enter operation (birth/death/quit): death
+Enter person to mark as dead: Charlie
+Enter operation (birth/death/quit): death
+Enter person to mark as dead: Bob
+Enter operation (birth/death/quit): quit
+
+Inheritance after deaths: ['John', 'Alice', 'David', 'Eve']

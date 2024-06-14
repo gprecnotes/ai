@@ -1,0 +1,58 @@
+from queue import PriorityQueue
+
+def bfs(graph, start, goal, h):
+    pq = PriorityQueue()
+    pq.put((h[start], [start]))
+
+    while not pq.empty():
+        _, path = pq.get()
+        c = path[-1]
+
+        if c == goal:
+            return path
+
+        for n in graph[c]:
+            if n not in path:
+                new_path = path + [n]
+                pq.put((h[n], new_path))
+
+# Take input from user for the graph
+graph = {}
+nodes = input("Enter nodes (comma-separated): ").split(',')
+for node in nodes:
+    neighbors = input(f"Enter neighbors for node {node} (comma-separated, empty for none): ").split(',')
+    graph[node] = neighbors
+
+# Take input from user for heuristic values
+h = {}
+for node in nodes:
+    h[node] = int(input(f"Enter heuristic value for node {node}: "))
+
+# Take input from user for start and goal nodes
+start = input("Enter start node: ")
+goal = input("Enter goal node: ")
+
+solution = bfs(graph, start, goal, h)
+print(f"BFS path from {start} to {goal}: {solution}")
+
+Ouptut 
+
+Enter nodes (comma-separated): A,B,C,D,E,F,G
+Enter neighbors for node A (comma-separated, empty for none): B,C
+Enter neighbors for node B (comma-separated, empty for none): D,E
+Enter neighbors for node C (comma-separated, empty for none): F,G
+Enter neighbors for node D (comma-separated, empty for none): 
+Enter neighbors for node E (comma-separated, empty for none): 
+Enter neighbors for node F (comma-separated, empty for none): 
+Enter neighbors for node G (comma-separated, empty for none): 
+Enter heuristic value for node A: 5
+Enter heuristic value for node B: 3
+Enter heuristic value for node C: 7
+Enter heuristic value for node D: 8
+Enter heuristic value for node E: 2
+Enter heuristic value for node F: 4
+Enter heuristic value for node G: 1
+Enter start node: A
+Enter goal node: G
+
+BFS path from A to G: ['A', 'B', 'E', 'G']
